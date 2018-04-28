@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
 
 const files = fs.readdirSync(__dirname + "/files/");
 const map = new Map();
@@ -31,8 +32,20 @@ for (var i in files) {
 }
 
 Promise.all(fileLoads).then(() => {
-    console.log(map);
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    
+    rl.question('What terms do you want to find? Use AND to search for more. ', (answer) => {
+        const searchTerms = answer.split(/(?:,| |\.)+/);
+        console.log(searchTerms);
+        if (searchTerms.length === 1) {
+            if(map.has(searchTerms[0])) {
+                console.log(map.get(searchTerms[0]));
+            }
+        }
+        rl.close();
+    });
 });
-
-
 
