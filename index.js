@@ -39,10 +39,11 @@ Promise.all(fileLoads).then(() => {
     
     rl.question('What terms do you want to find? Use AND to search for more. ', (answer) => {
         const searchTerms = answer.split(/(?:,| |\.)+/);
-        console.log(searchTerms);
         if (searchTerms.length === 1) {
             if(map.has(searchTerms[0])) {
-                console.log(map.get(searchTerms[0]));
+                const posts = map.get(searchTerms[0]).forEach(post => {
+                    console.log(post);
+                });
             }
         }
         rl.close();
