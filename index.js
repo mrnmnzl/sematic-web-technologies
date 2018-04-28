@@ -14,6 +14,7 @@ function readFile(filePath, fileName) {
             words.push(...data.split(/(?:,| |\.)+/));
             words.forEach(word => {
                 if(word === '') return;
+                word = word.toLowerCase();
                 if (!map.has(word)) {
                     map.set(word, new Set([fileName]))
                 } else {
