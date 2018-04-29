@@ -46,6 +46,31 @@ Promise.all(fileLoads).then(() => {
                     console.log(post);
                 });
             }
+        } else {
+            do {
+                const index = searchTerms.indexOf("AND");
+                searchTerms.splice(index, 1);
+            } 
+            while(searchTerms.indexOf("AND") !== -1);
+
+            let previousPosts = new Set();
+            let currentPosts = new Set();
+
+            searchTerms.forEach(term => {   
+                if(map.has(term)) {
+                    if(previousPosts.size === 0) {
+                        previousPosts = map.get(term);
+                    } else {
+                        currentPosts = map.get(term);
+
+                        let intersection = new Set(
+                            [...previousPosts].filter(x => currentPosts.has(x)));
+                        
+                        previousPosts = intersection;
+                    }
+                }
+            });
+            console.log(previousPosts);
         }
         rl.close();
     });
