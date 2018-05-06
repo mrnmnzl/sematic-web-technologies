@@ -6,6 +6,7 @@ const _ = require('underscore');
 const Filequeue = require('filequeue');
 
 const fq = new Filequeue(200);
+//Reads all files from directory 'corpus'
 const files = fs.readdirSync(__dirname + "/corpus/");
 let numDocuments = files.length;
 const map = new Map();
