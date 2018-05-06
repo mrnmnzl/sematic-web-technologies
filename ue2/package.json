@@ -1,0 +1,17 @@
+{
+  "name": "ue1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "filequeue": "^0.5.0",
+    "readline-sync": "^1.4.9",
+    "stopword": "^0.1.10",
+    "underscore": "^1.9.0"
+  }
+}
