@@ -17,6 +17,7 @@ const fileLoads = [];
 function readFile(filePath, fileName) {
     return new Promise((resolve, reject) => {
         fq.readFile(filePath, 'utf8', (err, data) => {
+            //Error -> stop
             if (err) reject(err);
 
             let words = [];
@@ -36,21 +37,29 @@ function readFile(filePath, fileName) {
                         map.get(word).files[fileName] = {name: fileName, termCount: 1, wordCount: numWordsinDocument};
                     }
                 }
+
                 const data = map.get(word);
                 data.idf = numDocuments / Object.keys(data.files).length;
+
+                // e.g. structure of map
+                // Map: "germany", {idf: 2.34, files: {"text.txt": { name: "text.txt", termCount: 5, wordCount: 345 }}
+                //                                    {"text2.txt": { name: "text2.txt", termCount: 14, wordCount: 1495 }}}
+                //      "austria", {idf: 15.3, files: {"text.txt": { name: "text.txt", termCount: 1, wordCount: 345 }}
+                //                                    {"text2.txt": { name: "text2.txt", termCount: 1, wordCount: 1495 }}}
             });
 
+            //Everything fine
             resolve();
         });
     });
 }
 
-//Promises werden in einem Array gespeichert
+//Promises are saved in an array
 for (var i in files) {
     fileLoads.push(readFile(__dirname + "/corpus/" + files[i], files[i]));
 }
 
-//Es wird zuerst darauf gewartet, dass auch alle Files gelesen und indiziert wurden, bevor die Console gestartet wird
+//All promises need to be resolved before the console is started
 Promise.all(fileLoads).then(() => {
     startConsole();
 });
@@ -100,6 +109,7 @@ function startConsole() {
         }
         startConsole();
     } else {
+        //Map for search results
         const foundResults = new Map();
 
         searchTerms.forEach(term => {   
@@ -121,12 +131,17 @@ function startConsole() {
             } 
         });
 
+        // e.g. structure of foundPosts
+        // Map: "text.txt", {filename: "text.txt", totalScore: 124.00, terms: [{term: "germany", score: 34.00 }
+        //                                                                     {term: "austria", score: 90.00 }]}
+
+        
+        // Get all values of foundPosts and sort by 'totalScore'
         let displayResults = [];
         for (let value of foundResults.values()) {
             displayResults.push(value);
         }
         displayResults = _.sortBy(displayResults, 'totalScore').reverse();
-
         const numResults = Object.keys(displayResults).length;
 
         //Check how many results you can display
