@@ -12,6 +12,6 @@
     "filequeue": "^0.5.0",
     "readline-sync": "^1.4.9",
     "stopword": "^0.1.10",
-    "underscore": "^1.9.0"
+    "underscore": "^1.12.1"
   }
 }
